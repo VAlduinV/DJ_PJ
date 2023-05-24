@@ -1,0 +1,108 @@
+{% load static %}
+{% load main_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="{% static 'main/CSS/main.css' %}">
+    <link rel="icon" type="image/svg" href="{% static 'main/img/favicon/favicon_created_by_logaster.ico' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+<table class="table-page" border=0 cellpadding="0" cellspacing="0">
+<tr><td valign=top>{% menu %}
+<table class="table-content" border=0 cellpadding="0" cellspacing="0">
+<tr>
+<!-- Sidebar слева -->
+	<td valign="top" class="left-chapters">
+	<ul id="leftchapters">
+		{% if tech_selected == 0 %}
+			<li class="selected">Всі категорії</li>
+		{% else %}
+			<li><a href="{% url 'home' %}">Всі категорії</a></li>
+		{% endif %}
+
+		{% for t in techs %}
+		{% if t.main__count > 0 %}
+			{% if t.pk == tech_selected %}
+				<li class="selected">{{t.name}}</li>
+			{% else %}
+				<li><a href="{{ t.get_absolute_url }}">{{t.name}}</a></li>
+			{% endif %}
+		{% endif %}
+		{% endfor %}
+
+
+        <a href="{% url 'home' %}"><li><i class="fas fa-dragon"></i>Головна сторінка</li></a>
+        <a href="{% url 'about' %}"><li><i class="fas fa-info-circle"></i>Про нас</li></a>
+		<a href="{% url 'register' %}"><li><i class="fas fa-user-check"></i>Реєстрація</li></a>
+		<a href="{% url 'contact' %}"><li><i class="fas fa-envelope"></i>Контакти</li></a>
+		<li class="share">
+		<p>Наш канал</p>
+		<a class="share-yt" href="https://www.youtube.com/" target="_blank" rel="nofollow"></a>
+		</li>
+	</ul>
+    </td>
+<!-- Конец Sidebar'а -->
+<td valign="top" class="content">
+	<!-- Хлебные крошки -->
+	{% block breadcrumbs %}
+	{% endblock %}
+
+<!-- Блок контента -->
+	<div class="content-text">
+{% block content %}
+{% endblock %}
+{% if page_obj.has_other_pages %}
+<nav class="list-pages">
+    <ul>
+		{% if page_obj.has_previous %}
+		<li class="page_num">
+			<a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+		</li>
+		{% endif %}
+        {% for p in paginator.page_range %}
+		{% if page_obj.number == p %}
+		<li class="page-num page-num-selected">{{ p }}</li>
+		{% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+        <li class="page-num">
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+		{% endif %}
+        {% endfor %}
+		{% if page_obj.has_next %}
+		<li class="page-num">
+			<a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+		</li>
+		{% endif %}
+    </ul>
+</nav>
+{% endif %}
+	</div>
+<!-- Конец блока контента -->
+</td></tr></table>
+</td></tr></table>
+<!-- Footer -->
+<footer>
+    <p><center><span class="logo-footer">V.H.V</span>
+    <span class="text-footer">⊗©Часткове або повне копіювання цього сайту заборонено 2021-2022⊗</span></center></p>
+</footer>
+<!-- Конец footer'а и страницы -->
+
+<header>
+   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+</header>
+
+<!-- filters -->
+</body>
+</html>

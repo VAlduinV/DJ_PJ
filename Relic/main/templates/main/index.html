@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %} <!-- наследование -->
+
+{% block title %}V_H_V{% endblock %}
+
+{% block content %} <!-- section to use -->
+<ul class="list-articles">
+	{% for p in posts %}
+			<li><div class="article-panel">
+			<p class="first">Категорія: {{p.tech}}</p>
+			<p class="last">Дата: {{p.time_update|date:"d-m-Y H:i:s"}}</p>
+			</div>
+
+	{% if p.photo %}
+			<p><img class="img-article-left thumb" src="{{ p.photo.url }}"></p>
+	{% endif %}
+
+			<h2>{{p.title}}</h2>
+	<!--Экранирование тегов-->
+	{% autoescape on %}
+	{{p.content|linebreaks|truncatewords:50}}
+	{% endautoescape %}
+			<div class="clear"></div>
+			<p class="link-read-post"><a href="{{ p.get_absolute_url }}">Читати статтю</a></p>
+			</li>
+	{% endfor %}
+</ul>
+{% endblock %}
